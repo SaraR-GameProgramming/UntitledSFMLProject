@@ -1,0 +1,2 @@
+C:\Users\Saral\source\repos\UntitledSFMLGame\UntitledSFMLGame\Debug\UntitledSFMLGame.exe
+C:\Users\Saral\source\repos\UntitledSFMLGame\UntitledSFMLGame\Debug\UntitledSFMLGame.pdb
