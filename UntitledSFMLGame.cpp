@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Player.h"
 
 sf::RenderWindow window(sf::VideoMode(1024, 768), "SFML Game");
 
@@ -12,6 +13,8 @@ sf::Texture playerTexture;
 // game sprites
 sf::Sprite backgroundSprite;
 sf::Sprite playerSprite;
+
+Player myPlayer;
 
 sf::Vector2f playerPos;
 bool isPlayerMovingRight{ false };
@@ -30,6 +33,7 @@ void updateMovement(float dt)
         playerSprite.move(-20.0f * dt, 0);
     }
 
+    myPlayer.updateMovement(dt);
     
 }
 
@@ -42,10 +46,12 @@ int main()
     backgroundTexture.loadFromFile("GameGraphics/bg.png");
     backgroundSprite.setTexture(backgroundTexture);
 
-    playerTexture.loadFromFile("GameGraphics/bunny.png");
+    myPlayer.init("GameGraphics/bunny.png", sf::Vector2f(1024 / 2, 768 / 2), 200);
+
+  /*  playerTexture.loadFromFile("GameGraphics/bunny.png");
     playerSprite.setTexture(playerTexture);
     playerSprite.setPosition(sf::Vector2f(1024 / 2, 768 / 2));
-    playerSprite.setScale(3, 3);
+    playerSprite.setScale(3, 3);*/
 
 
     
@@ -55,16 +61,27 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if(event.key.code == sf::Keyboard::Up)
+                {
+                    myPlayer.jump(750.0f);
+                    std::cout << "player has jumped" << std::endl;
+                }
+            }
+
             // updateinput
             if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Right)
                 {
                     isPlayerMovingRight = true;
+                    std::cout << "player has moved Right" << std::endl;
                 }
                 if (event.key.code == sf::Keyboard::Left)
                 {
                     isPlayerMovingLeft = true;
+                    std::cout << "player has moved Left" << std::endl;
                 }
 
             }
@@ -74,11 +91,13 @@ int main()
                 if (event.key.code == sf::Keyboard::Right)
                 {
                     isPlayerMovingRight = false;
+                    std::cout << "player has stopped moving" << std::endl;
                 }
 
                 if (event.key.code == sf::Keyboard::Left)
                 {
                     isPlayerMovingLeft = false;
+                    std::cout << "player has stopped moving" << std::endl;
                 }
             }
 
@@ -96,7 +115,7 @@ int main()
         window.clear();
         // drawing the background for the game
         window.draw(backgroundSprite);
-        window.draw(playerSprite);
+        window.draw(myPlayer.getSprite());
         window.display();
     }
 
